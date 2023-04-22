@@ -1,8 +1,7 @@
-﻿// Console.WriteLine("Welcome to the AnyBank.");
-
-using System.Collections;
+﻿using System.Collections;
 using bytebank_ATENDIMENTO.bytebank.Exceptions;
 using bytebank_ATENDIMENTO.bytebank.Modelos.Conta;
+using bytebank_ATENDIMENTO.bytebank.Service;
 using bytebank_ATENDIMENTO.bytebank.Util;
 using bytebank.Modelos.Conta;
 
@@ -90,14 +89,14 @@ void TestAccounts()
 
 
   AccountsList accountsList = new AccountsList();
-  accountsList.Add(new ContaCorrente(852, new Cliente("1111111", "Bob", "Dev")));
-  accountsList.Add(new ContaCorrente(852, new Cliente("2222222", "Maria", "Financial Manager")));
-  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager")));
-  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager")));
-  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager")));
-  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager")));
+  accountsList.Add(new ContaCorrente(852, new Cliente("1111111", "Bob", "Dev"),100));
+  accountsList.Add(new ContaCorrente(852, new Cliente("2222222", "Maria", "Financial Manager"),100));
+  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager"),100));
+  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager"),100));
+  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager"),100));
+  accountsList.Add(new ContaCorrente(852, new Cliente("3333333", "John", "Manager"),100));
 
-  var account1 = new ContaCorrente(921, new Cliente("Suzy", "5555555", "Teacher"));
+  var account1 = new ContaCorrente(921, new Cliente("Suzy", "5555555", "Teacher"),100);
   accountsList.Add(account1);
   // Console.WriteLine();
   accountsList.ShowAccount();
@@ -115,251 +114,8 @@ void TestAccounts()
 
 #endregion
 
-
-List<ContaCorrente> _accountsList = new List<ContaCorrente>()
-{
-  new(456, new Cliente("111111111", "Bob", "Developer")),
-  new(876, new Cliente("222222222", "Maria", "Director")),
-  new(123, new Cliente("333333333", "John", "Account Manager"))
-};
-
-void CustomerService()
-{
-  try
-  {
-    char option = '0';
-
-    while (option != '6')
-    {
-      Console.Clear();
-      Console.WriteLine($"=================================================\n" +
-                        $"====                 Service                 ====\n" +
-                        $"====  1 - Register Account                   ====\n" +
-                        $"====  2 - List Accounts                      ====\n" +
-                        $"====  3 - Remove Account                     ====\n" +
-                        $"====  4 - Order Accounts                     ====\n" +
-                        $"====  5 - Search Account                     ====\n" +
-                        $"====  6 - Leave System                       ====\n" +
-                        $"=================================================");
-      Console.WriteLine("\n\n");
-      Console.Write("Enter an option: ");
-      try
-      {
-        option = Console.ReadLine()[0];
-      }
-      catch (Exception e)
-      {
-        throw new ByteBankException(e.Message);
-      }
-
-      switch (option)
-      {
-        case '1':
-          RegisterAccount();
-          break;
-        case '2':
-          ListAccounts();
-          break;
-        case '3':
-          RemoveAccount();
-          break;
-        case '4':
-          OrderAccounts();
-          break;
-        case '5':
-          SearchAccount();
-          break;
-        default:
-          Console.WriteLine("Option not implemented.");
-          break;
-      }
-    }
-  }
-  catch (ByteBankException e)
-  {
-    Console.WriteLine(e.Message);
-  }
-}
-
-void RegisterAccount()
-{
-  Console.Clear();
-  Console.WriteLine($"=================================================\n" +
-                    $"====            Register account             ====\n" +
-                    $"=================================================");
-  Console.WriteLine("\n");
-  Console.WriteLine("====           Inform account details         ====");
-
-  Console.Write("Agency Number: ");
-  int numberAgency = int.Parse(Console.ReadLine());
-
-  Console.Write("Holder Name: ");
-  string holderName = Console.ReadLine();
-
-  Console.Write("CPF: ");
-  string cpf = Console.ReadLine();
-
-  Console.Write("Profession: ");
-  string profession = Console.ReadLine();
-
-  ContaCorrente account = new ContaCorrente(numberAgency, new Cliente(cpf, holderName, profession));
-  _accountsList.Add(account);
-  Console.WriteLine("Account registered successfully!");
-  Console.ReadKey();
-}
-
-void ListAccounts()
-{
-  Console.Clear();
-  Console.WriteLine($"=================================================\n" +
-                    $"====              List accounts              ====\n" +
-                    $"=================================================");
-  Console.WriteLine("\n");
-
-  if (_accountsList.Count <= 0)
-  {
-    Console.WriteLine("There are no registered accounts!");
-    Console.ReadKey();
-    return;
-  }
-
-  foreach (ContaCorrente account in _accountsList)
-  {
-    Console.WriteLine($"====    Account details   ====\n\n" +
-                      $"Number agency: {account.Numero_agencia}\n" +
-                      $"Number account: {account.Conta}\n" +
-                      $"Balance account: {account.Saldo}\n" +
-                      $"Holder Name: {account.Titular.Nome}\n" +
-                      $"CPF: {account.Titular.Cpf}\n" +
-                      $"Profession: {account.Titular.Profissao}\n");
-    Console.ReadKey();
-  }
-}
-
-void RemoveAccount()
-{
-  Console.Clear();
-  Console.WriteLine($"=================================================\n" +
-                    $"====              Remove account             ====\n" +
-                    $"=================================================");
-  Console.WriteLine("\n");
-  Console.Write("Enter an account number: ");
-  string accountNumber = Console.ReadLine();
-
-  ContaCorrente account = null;
-
-  foreach (var accounts in _accountsList)
-  {
-    if (accounts.Conta.Equals(accountNumber))
-    {
-      account = accounts;
-    }
-  }
-
-  if (account != null)
-  {
-    _accountsList.Remove(account);
-    Console.WriteLine("Account removed on the list!");
-  }
-  else
-  {
-    Console.WriteLine("Account for removal not found.");
-  }
-
-  Console.ReadKey();
-}
-
-void OrderAccounts()
-{
-  Console.Clear();
-  Console.WriteLine($"=================================================\n" +
-                    $"====              Order accounts             ====\n" +
-                    $"=================================================");
-  Console.WriteLine("\n");
-
-  _accountsList.Sort();
-  Console.WriteLine("Accounts list ordered.");
-  Console.ReadKey();
-}
-
-void SearchAccount()
-{
-  Console.Clear();
-  Console.WriteLine($"=================================================\n" +
-                    $"====              Search account             ====\n" +
-                    $"=================================================");
-  Console.WriteLine("\n");
-
-  Console.Write("Want to search for (1) NUMBER ACCOUNT or (2) Holder CPF: ");
-  switch (int.Parse(Console.ReadLine()))
-  {
-    case 1:
-      Console.Write("\nEnter an number account: ");
-      var _numberAccount = Console.ReadLine();
-      ContaCorrente searchAccount = SearchForAccountNumber(_numberAccount);
-      Console.WriteLine(searchAccount.ToString());
-      // Console.WriteLine($"\nAccount:\n" +
-      //                   $"- Agency number: {searchAccount.Numero_agencia}\n" +
-      //                   $"- Number account: {searchAccount.Conta}\n" +
-      //                   $"- Balance: {searchAccount.Saldo}\n" +
-      //                   $"Holder\n" +
-      //                   $"- Name: {searchAccount.Titular.Nome}\n" +
-      //                   $"- CPF: {searchAccount.Titular.Cpf}\n" +
-      //                   $"- Profession: {searchAccount.Titular.Profissao}\n");
-      Console.ReadKey();
-      break;
-    case 2:
-      Console.Write("\nEnter holder CPF: ");
-      var _cpf = Console.ReadLine();
-      ContaCorrente searchCpf = SearchForHolderCpf(_cpf);
-      Console.WriteLine(searchCpf.ToString());
-      // Console.WriteLine($"\nAccount:\n" +
-      //                   $"- Agency number: {searchCpf.Numero_agencia}\n" +
-      //                   $"- Number account: {searchCpf.Conta}\n" +
-      //                   $"- Balance: {searchCpf.Saldo}\n" +
-      //                   $"Holder\n" +
-      //                   $"- Name: {searchCpf.Titular.Nome}\n" +
-      //                   $"- CPF: {searchCpf.Titular.Cpf}\n" +
-      //                   $"- Profession: {searchCpf.Titular.Profissao}\n");
-      Console.ReadKey();
-      break;
-    default:
-      Console.WriteLine("Invalid option.");
-      break;
-  }
-
-  ContaCorrente SearchForAccountNumber(string? numberAccount)
-  {
-    ContaCorrente account = null;
-    for (int i = 0; i < _accountsList.Count; i++)
-    {
-      if (_accountsList[i].Conta.Equals(numberAccount))
-      {
-        account = _accountsList[i];
-        break;
-      }
-    }
-
-    return account;
-  }
-
-  ContaCorrente SearchForHolderCpf(string? cpf)
-  {
-    ContaCorrente account = null;
-    for (int i = 0; i < _accountsList.Count; i++)
-    {
-      if (_accountsList[i].Titular.Cpf.Equals(cpf))
-      {
-        account = _accountsList[i];
-        break;
-      }
-    }
-
-    return account;
-  }
-}
-
-CustomerService();
+var service = new ByteBankService();
+service.CustomerService();
 
 
 #region List examples

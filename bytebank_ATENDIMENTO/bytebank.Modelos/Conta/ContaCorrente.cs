@@ -93,12 +93,12 @@ namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
       return true;
     }
 
-    public ContaCorrente(int numero_agencia, Cliente titular)
+    public ContaCorrente(int numero_agencia, Cliente titular, double saldo)
     {
       Numero_agencia = numero_agencia;
       Conta = Guid.NewGuid().ToString().Substring(0, 8);
       Titular = titular;
-      Saldo = 100;
+      Saldo = saldo;
       TotalDeContasCriadas++;
     }
 
