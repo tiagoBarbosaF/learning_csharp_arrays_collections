@@ -2,7 +2,7 @@
 
 namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
 {
-  public class ContaCorrente
+  public class ContaCorrente : IComparable<ContaCorrente>
   {
     private int _numero_agencia;
 
@@ -102,13 +102,28 @@ namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
       TotalDeContasCriadas++;
     }
 
+    public int CompareTo(ContaCorrente? other)
+    {
+      if (other == null)
+      {
+        return 1;
+      }
+      else
+      {
+        return Numero_agencia.CompareTo(other.Numero_agencia);
+      }
+    }
+
     public override string ToString()
     {
-      return $" === DADOS DA CONTA === \n" +
-             $"Número da Conta : {this.Conta} \n" +
-             $"Titular da Conta: {this.Titular.Nome} \n" +
-             $"CPF do Titular  : {this.Titular.Cpf} \n" +
-             $"Profissão do Titular: {this.Titular.Profissao}";
+      return $"\nAccount:\n" +
+             $"- Agency number: {Numero_agencia}\n" +
+             $"- Number account: {Conta}\n" +
+             $"- Balance: {Saldo}\n" +
+             $"Holder\n" +
+             $"- Name: {Titular.Nome}\n" +
+             $"- CPF: {Titular.Cpf}\n" +
+             $"- Profession: {Titular.Profissao}\n";
     }
   }
 }

@@ -118,9 +118,9 @@ void TestAccounts()
 
 List<ContaCorrente> _accountsList = new List<ContaCorrente>()
 {
-  new(123,new Cliente("111111111","Bob", "Developer")),
-  new(123,new Cliente("222222222","Maria", "Director")),
-  new(123,new Cliente("333333333","John", "Account Manager"))
+  new(456, new Cliente("111111111", "Bob", "Developer")),
+  new(876, new Cliente("222222222", "Maria", "Director")),
+  new(123, new Cliente("333333333", "John", "Account Manager"))
 };
 
 void CustomerService()
@@ -160,6 +160,15 @@ void CustomerService()
         case '2':
           ListAccounts();
           break;
+        case '3':
+          RemoveAccount();
+          break;
+        case '4':
+          OrderAccounts();
+          break;
+        case '5':
+          SearchAccount();
+          break;
         default:
           Console.WriteLine("Option not implemented.");
           break;
@@ -180,16 +189,16 @@ void RegisterAccount()
                     $"=================================================");
   Console.WriteLine("\n");
   Console.WriteLine("====           Inform account details         ====");
-  
+
   Console.Write("Agency Number: ");
   int numberAgency = int.Parse(Console.ReadLine());
-  
+
   Console.Write("Holder Name: ");
   string holderName = Console.ReadLine();
-  
+
   Console.Write("CPF: ");
   string cpf = Console.ReadLine();
-  
+
   Console.Write("Profession: ");
   string profession = Console.ReadLine();
 
@@ -217,6 +226,7 @@ void ListAccounts()
   foreach (ContaCorrente account in _accountsList)
   {
     Console.WriteLine($"====    Account details   ====\n\n" +
+                      $"Number agency: {account.Numero_agencia}\n" +
                       $"Number account: {account.Conta}\n" +
                       $"Balance account: {account.Saldo}\n" +
                       $"Holder Name: {account.Titular.Nome}\n" +
@@ -226,10 +236,134 @@ void ListAccounts()
   }
 }
 
+void RemoveAccount()
+{
+  Console.Clear();
+  Console.WriteLine($"=================================================\n" +
+                    $"====              Remove account             ====\n" +
+                    $"=================================================");
+  Console.WriteLine("\n");
+  Console.Write("Enter an account number: ");
+  string accountNumber = Console.ReadLine();
+
+  ContaCorrente account = null;
+
+  foreach (var accounts in _accountsList)
+  {
+    if (accounts.Conta.Equals(accountNumber))
+    {
+      account = accounts;
+    }
+  }
+
+  if (account != null)
+  {
+    _accountsList.Remove(account);
+    Console.WriteLine("Account removed on the list!");
+  }
+  else
+  {
+    Console.WriteLine("Account for removal not found.");
+  }
+
+  Console.ReadKey();
+}
+
+void OrderAccounts()
+{
+  Console.Clear();
+  Console.WriteLine($"=================================================\n" +
+                    $"====              Order accounts             ====\n" +
+                    $"=================================================");
+  Console.WriteLine("\n");
+
+  _accountsList.Sort();
+  Console.WriteLine("Accounts list ordered.");
+  Console.ReadKey();
+}
+
+void SearchAccount()
+{
+  Console.Clear();
+  Console.WriteLine($"=================================================\n" +
+                    $"====              Search account             ====\n" +
+                    $"=================================================");
+  Console.WriteLine("\n");
+
+  Console.Write("Want to search for (1) NUMBER ACCOUNT or (2) Holder CPF: ");
+  switch (int.Parse(Console.ReadLine()))
+  {
+    case 1:
+      Console.Write("\nEnter an number account: ");
+      var _numberAccount = Console.ReadLine();
+      ContaCorrente searchAccount = SearchForAccountNumber(_numberAccount);
+      Console.WriteLine(searchAccount.ToString());
+      // Console.WriteLine($"\nAccount:\n" +
+      //                   $"- Agency number: {searchAccount.Numero_agencia}\n" +
+      //                   $"- Number account: {searchAccount.Conta}\n" +
+      //                   $"- Balance: {searchAccount.Saldo}\n" +
+      //                   $"Holder\n" +
+      //                   $"- Name: {searchAccount.Titular.Nome}\n" +
+      //                   $"- CPF: {searchAccount.Titular.Cpf}\n" +
+      //                   $"- Profession: {searchAccount.Titular.Profissao}\n");
+      Console.ReadKey();
+      break;
+    case 2:
+      Console.Write("\nEnter holder CPF: ");
+      var _cpf = Console.ReadLine();
+      ContaCorrente searchCpf = SearchForHolderCpf(_cpf);
+      Console.WriteLine(searchCpf.ToString());
+      // Console.WriteLine($"\nAccount:\n" +
+      //                   $"- Agency number: {searchCpf.Numero_agencia}\n" +
+      //                   $"- Number account: {searchCpf.Conta}\n" +
+      //                   $"- Balance: {searchCpf.Saldo}\n" +
+      //                   $"Holder\n" +
+      //                   $"- Name: {searchCpf.Titular.Nome}\n" +
+      //                   $"- CPF: {searchCpf.Titular.Cpf}\n" +
+      //                   $"- Profession: {searchCpf.Titular.Profissao}\n");
+      Console.ReadKey();
+      break;
+    default:
+      Console.WriteLine("Invalid option.");
+      break;
+  }
+
+  ContaCorrente SearchForAccountNumber(string? numberAccount)
+  {
+    ContaCorrente account = null;
+    for (int i = 0; i < _accountsList.Count; i++)
+    {
+      if (_accountsList[i].Conta.Equals(numberAccount))
+      {
+        account = _accountsList[i];
+        break;
+      }
+    }
+
+    return account;
+  }
+
+  ContaCorrente SearchForHolderCpf(string? cpf)
+  {
+    ContaCorrente account = null;
+    for (int i = 0; i < _accountsList.Count; i++)
+    {
+      if (_accountsList[i].Titular.Cpf.Equals(cpf))
+      {
+        account = _accountsList[i];
+        break;
+      }
+    }
+
+    return account;
+  }
+}
+
 CustomerService();
 
 
 #region List examples
+
 // List<ContaCorrente> _accountList2 = new List<ContaCorrente>()
 // {
 //   new(123,new Cliente("111111111","Bob", "Developer")),
@@ -281,4 +415,5 @@ CustomerService();
 // {
 //   Console.WriteLine($"Index [{i}] - Account: {_accountList3[i].Conta}, Holder: {_accountList3[i].Titular}");
 // }
+
 #endregion
