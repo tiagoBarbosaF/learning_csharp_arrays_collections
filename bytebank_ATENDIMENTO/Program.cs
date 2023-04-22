@@ -1,6 +1,7 @@
 ﻿// Console.WriteLine("Welcome to the AnyBank.");
 
 using System.Collections;
+using bytebank_ATENDIMENTO.bytebank.Exceptions;
 using bytebank_ATENDIMENTO.bytebank.Modelos.Conta;
 using bytebank_ATENDIMENTO.bytebank.Util;
 using bytebank.Modelos.Conta;
@@ -115,40 +116,59 @@ void TestAccounts()
 #endregion
 
 
-ArrayList _accountsList = new ArrayList();
+List<ContaCorrente> _accountsList = new List<ContaCorrente>()
+{
+  new(123,new Cliente("111111111","Bob", "Developer")),
+  new(123,new Cliente("222222222","Maria", "Director")),
+  new(123,new Cliente("333333333","John", "Account Manager"))
+};
 
 void CustomerService()
 {
-  char option = '0';
-
-  while (option != '6')
+  try
   {
-    Console.Clear();
-    Console.WriteLine($"=================================================\n" +
-                      $"====                 Service                 ====\n" +
-                      $"====  1 - Register Account                   ====\n" +
-                      $"====  2 - List Accounts                      ====\n" +
-                      $"====  3 - Remove Account                     ====\n" +
-                      $"====  4 - Order Accounts                     ====\n" +
-                      $"====  5 - Search Account                     ====\n" +
-                      $"====  6 - Leave System                       ====\n" +
-                      $"=================================================");
-    Console.WriteLine("\n\n");
-    Console.Write("Enter an option: ");
-    option = Console.ReadLine()[0];
+    char option = '0';
 
-    switch (option)
+    while (option != '6')
     {
-      case '1':
-        RegisterAccount();
-        break;
-      case '2':
-        ListAccounts();
-        break;
-      default:
-        Console.WriteLine("Option not implemented.");
-        break;
+      Console.Clear();
+      Console.WriteLine($"=================================================\n" +
+                        $"====                 Service                 ====\n" +
+                        $"====  1 - Register Account                   ====\n" +
+                        $"====  2 - List Accounts                      ====\n" +
+                        $"====  3 - Remove Account                     ====\n" +
+                        $"====  4 - Order Accounts                     ====\n" +
+                        $"====  5 - Search Account                     ====\n" +
+                        $"====  6 - Leave System                       ====\n" +
+                        $"=================================================");
+      Console.WriteLine("\n\n");
+      Console.Write("Enter an option: ");
+      try
+      {
+        option = Console.ReadLine()[0];
+      }
+      catch (Exception e)
+      {
+        throw new ByteBankException(e.Message);
+      }
+
+      switch (option)
+      {
+        case '1':
+          RegisterAccount();
+          break;
+        case '2':
+          ListAccounts();
+          break;
+        default:
+          Console.WriteLine("Option not implemented.");
+          break;
+      }
     }
+  }
+  catch (ByteBankException e)
+  {
+    Console.WriteLine(e.Message);
   }
 }
 
@@ -198,6 +218,7 @@ void ListAccounts()
   {
     Console.WriteLine($"====    Account details   ====\n\n" +
                       $"Number account: {account.Conta}\n" +
+                      $"Balance account: {account.Saldo}\n" +
                       $"Holder Name: {account.Titular.Nome}\n" +
                       $"CPF: {account.Titular.Cpf}\n" +
                       $"Profession: {account.Titular.Profissao}\n");
@@ -206,3 +227,58 @@ void ListAccounts()
 }
 
 CustomerService();
+
+
+#region List examples
+// List<ContaCorrente> _accountList2 = new List<ContaCorrente>()
+// {
+//   new(123,new Cliente("111111111","Bob", "Developer")),
+//   new(123,new Cliente("222222222","Maria", "Director")),
+//   new(123,new Cliente("333333333","John", "Account Manager"))
+// };
+//
+// List<ContaCorrente> _accountList3 = new List<ContaCorrente>()
+// {
+//   new(456,new Cliente("444444444","Mary", "Developer")),
+//   new(456,new Cliente("555555555","Paul", "Director")),
+//   new(456,new Cliente("666666666","Bia", "Account Manager"))
+// };
+//
+// Console.WriteLine("List 2:");
+// for (int i = 0; i < _accountList2.Count; i++)
+// {
+//   Console.WriteLine($"Index [{i}] - Account: {_accountList2[i].Conta}, Holder: {_accountList2[i].Titular}");
+// }
+//
+// _accountList2.AddRange(_accountList3);
+// Console.WriteLine();
+// Console.WriteLine("List 2 adding List 3:");
+// for (int i = 0; i < _accountList2.Count; i++)
+// {
+//   Console.WriteLine($"Index [{i}] - Account: {_accountList2[i].Conta}, Holder: {_accountList2[i].Titular}");
+// }
+//
+// _accountList2.Reverse();
+// Console.WriteLine();
+// Console.WriteLine("List 2 reverse:");
+// for (int i = 0; i < _accountList2.Count; i++)
+// {
+//   Console.WriteLine($"Index [{i}] - Account: {_accountList2[i].Conta}, Holder: {_accountList2[i].Titular}");
+// }
+//
+// Console.WriteLine();
+// var range = _accountList3.GetRange(0,2);
+// Console.WriteLine("List 3 range index:");
+// for (int i = 0; i < range.Count; i++)
+// {
+//   Console.WriteLine($"Index [{i}] - Account: {range[i].Conta}, Holder: {range[i].Titular}");
+// }
+//
+// Console.WriteLine();
+// _accountList3.Clear();
+// Console.WriteLine("List 3 clear:");
+// for (int i = 0; i < _accountList3.Count; i++)
+// {
+//   Console.WriteLine($"Index [{i}] - Account: {_accountList3[i].Conta}, Holder: {_accountList3[i].Titular}");
+// }
+#endregion

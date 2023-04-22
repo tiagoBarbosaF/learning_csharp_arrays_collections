@@ -30,5 +30,10 @@
       Profissao = profissao;
       TotalClientesCadastrados += 1;
     }
+
+    public override string ToString()
+    {
+      return $"Name: {Nome} - CPF: {Cpf} - Profession: {Profissao}";
+    }
   }
 }

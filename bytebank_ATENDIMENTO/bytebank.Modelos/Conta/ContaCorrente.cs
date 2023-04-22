@@ -98,6 +98,7 @@ namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
       Numero_agencia = numero_agencia;
       Conta = Guid.NewGuid().ToString().Substring(0, 8);
       Titular = titular;
+      Saldo = 100;
       TotalDeContasCriadas++;
     }
 
