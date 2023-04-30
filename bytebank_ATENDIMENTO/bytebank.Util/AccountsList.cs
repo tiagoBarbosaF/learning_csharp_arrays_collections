@@ -1,4 +1,4 @@
-﻿using bytebank_ATENDIMENTO.bytebank.Modelos.Conta;
+﻿using bytebank_Modelos.bytebank.Modelos.Conta;
 using bytebank.Modelos.Conta;
 
 namespace bytebank_ATENDIMENTO.bytebank.Util;

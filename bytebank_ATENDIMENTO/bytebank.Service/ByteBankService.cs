@@ -1,16 +1,20 @@
-﻿using bytebank_ATENDIMENTO.bytebank.Exceptions;
-using bytebank_ATENDIMENTO.bytebank.Modelos.Conta;
+﻿using System.Xml;
+using System.Xml.Serialization;
+using bytebank_ATENDIMENTO.bytebank.Exceptions;
+using bytebank_Modelos.bytebank.Modelos.Conta;
 using bytebank.Modelos.Conta;
+using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace bytebank_ATENDIMENTO.bytebank.Service;
 
 public class ByteBankService
 {
-  private readonly List<ContaCorrente?> _accountsList = new()
+  private List<ContaCorrente?> _accountsList = new()
   {
-    new ContaCorrente(123, new Cliente("111111111", "Bob", "Developer"),200),
-    new ContaCorrente(876, new Cliente("222222222", "Maria", "Director"),500),
-    new ContaCorrente(123, new Cliente("333333333", "John", "Account Manager"),1000)
+    new ContaCorrente(123, new Cliente("111111111", "Bob", "Developer"), 200),
+    new ContaCorrente(876, new Cliente("222222222", "Maria", "Director"), 500),
+    new ContaCorrente(123, new Cliente("333333333", "John", "Account Manager"), 1000)
   };
 
   public void CustomerService()
@@ -19,7 +23,7 @@ public class ByteBankService
     {
       var option = '0';
 
-      while (option != '6')
+      while (option != '8')
       {
         Console.Clear();
         Console.WriteLine($"=================================================\n" +
@@ -29,7 +33,9 @@ public class ByteBankService
                           $"====  3 - Remove Account                     ====\n" +
                           $"====  4 - Order Accounts                     ====\n" +
                           $"====  5 - Search Account                     ====\n" +
-                          $"====  6 - Leave System                       ====\n" +
+                          $"====  6 - Export Accounts Json               ====\n" +
+                          $"====  7 - Export Accounts Xml                ====\n" +
+                          $"====  8 - Leave System                       ====\n" +
                           $"=================================================");
         Console.WriteLine("\n\n");
         Console.Write("Enter an option: ");
@@ -60,6 +66,12 @@ public class ByteBankService
             SearchAccount();
             break;
           case '6':
+            ExportAccountsJson();
+            break;
+          case '7':
+            ExportAccountsXml();
+            break;
+          case '8':
             LeaveSystem();
             break;
           default:
@@ -94,11 +106,11 @@ public class ByteBankService
 
     Console.Write("Profession: ");
     var profession = Console.ReadLine()!;
-    
+
     Console.Write("Initial balance: ");
     var balance = double.Parse(Console.ReadLine()!);
 
-    var account = new ContaCorrente(numberAgency, new Cliente(cpf, holderName, profession),balance);
+    var account = new ContaCorrente(numberAgency, new Cliente(cpf, holderName, profession), balance);
     _accountsList.Add(account);
     Console.WriteLine("Account registered successfully!");
     Console.ReadKey();
@@ -231,6 +243,80 @@ public class ByteBankService
       else
         foreach (var account in accountsPerAgency)
           Console.WriteLine(account.ToString());
+    }
+  }
+
+
+  private void ExportAccountsJson()
+  {
+    Console.Clear();
+    Console.WriteLine($"=================================================\n" +
+                      $"====           Export Accounts Json          ====\n" +
+                      $"=================================================");
+    Console.WriteLine("\n");
+
+    if (_accountsList.Count <= 0)
+    {
+      Console.WriteLine("... There are no export accounts ...");
+      Console.ReadKey();
+    }
+    else
+    {
+      var json = JsonConvert.SerializeObject(_accountsList, Formatting.Indented);
+      var xml = new XmlSerializer(typeof(List<ContaCorrente>));
+      const string fileName = "contas.json";
+
+      try
+      {
+        using (var fileStream = new FileStream(fileName, FileMode.Create))
+        using(var streamWriter = new StreamWriter(fileStream))  
+        {
+          streamWriter.WriteLine(json);
+        }
+
+        Console.WriteLine($"File {fileName} saved in path bytebank_ATENDIMENTO\\bin\\Debug\\net6.0.");
+        Console.ReadKey();
+      }
+      catch (Exception e)
+      {
+        throw new ByteBankException(e.Message);
+      }
+    }
+  }
+  
+  private void ExportAccountsXml()
+  {
+    Console.Clear();
+    Console.WriteLine($"=================================================\n" +
+                      $"====            Export Accounts Xml          ====\n" +
+                      $"=================================================");
+    Console.WriteLine("\n");
+
+    if (_accountsList.Count <= 0)
+    {
+      Console.WriteLine("... There are no export accounts ...");
+      Console.ReadKey();
+    }
+    else
+    {
+      var xml = new XmlSerializer(typeof(List<ContaCorrente>));
+      const string fileName = "contas.xml";
+
+      try
+      {
+        var fileStream = new FileStream(fileName, FileMode.Create);
+        using(var streamWriter = new StreamWriter(fileStream))  
+        {
+          xml.Serialize(streamWriter, _accountsList);
+        }
+
+        Console.WriteLine($"File {fileName} saved in path bytebank_ATENDIMENTO\\bin\\Debug\\net6.0.");
+        Console.ReadKey();
+      }
+      catch (Exception e)
+      {
+        throw new ByteBankException(e.Message);
+      }
     }
   }
 

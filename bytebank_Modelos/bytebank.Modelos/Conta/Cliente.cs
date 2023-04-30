@@ -31,6 +31,10 @@
       TotalClientesCadastrados += 1;
     }
 
+    private Cliente()
+    {
+    }
+
     public override string ToString()
     {
       return $"Name: {Nome} - CPF: {Cpf} - Profession: {Profissao}";

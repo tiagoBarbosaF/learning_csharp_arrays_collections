@@ -1,6 +1,7 @@
-﻿using bytebank.Modelos.Conta;
+﻿using System.Runtime.Serialization;
+using bytebank.Modelos.Conta;
 
-namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
+namespace bytebank_Modelos.bytebank.Modelos.Conta
 {
   public class ContaCorrente : IComparable<ContaCorrente>
   {
@@ -100,6 +101,10 @@ namespace bytebank_ATENDIMENTO.bytebank.Modelos.Conta
       Titular = titular;
       Saldo = saldo;
       TotalDeContasCriadas++;
+    }
+
+    private ContaCorrente()
+    {
     }
 
     public int CompareTo(ContaCorrente? other)

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using bytebank_ATENDIMENTO.bytebank.Exceptions;
-using bytebank_ATENDIMENTO.bytebank.Modelos.Conta;
 using bytebank_ATENDIMENTO.bytebank.Service;
 using bytebank_ATENDIMENTO.bytebank.Util;
+using bytebank_Modelos.bytebank.Modelos.Conta;
 using bytebank.Modelos.Conta;
 
 #region Test Arrays
