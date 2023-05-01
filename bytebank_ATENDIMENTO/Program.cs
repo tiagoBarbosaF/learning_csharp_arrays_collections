@@ -4,6 +4,7 @@ using bytebank_ATENDIMENTO.bytebank.Service;
 using bytebank_ATENDIMENTO.bytebank.Util;
 using bytebank_Modelos.bytebank.Modelos.ADM.Utilitario;
 using bytebank_Modelos.bytebank.Modelos.Conta;
+using bytebank_PixKeyGenerator;
 using bytebank.Modelos.Conta;
 
 #region Test Arrays
@@ -115,10 +116,15 @@ void TestAccounts()
 
 #endregion
 
-var service = new ByteBankService();
-service.CustomerService();
+// var service = new ByteBankService();
+// service.CustomerService();
 
+var listKeys = PixGenerator.GetPixKeys(5);
 
+foreach (var key in listKeys!)
+{
+  Console.WriteLine(key);
+}
 #region List examples
 
 // List<ContaCorrente> _accountList2 = new List<ContaCorrente>()

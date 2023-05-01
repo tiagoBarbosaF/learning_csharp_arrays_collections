@@ -9,10 +9,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\bytebank_Modelos\bytebank_Modelos.csproj" />
+    <ProjectReference Include="..\ExportData\ExportData.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="bytebank_PixKeyGenerator">
+      <HintPath>..\..\bytebank_PixKeyGenerator\bytebank_PixKeyGenerator\bin\Debug\net6.0\bytebank_PixKeyGenerator.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
