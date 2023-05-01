@@ -2,6 +2,7 @@
 using bytebank_ATENDIMENTO.bytebank.Exceptions;
 using bytebank_ATENDIMENTO.bytebank.Service;
 using bytebank_ATENDIMENTO.bytebank.Util;
+using bytebank_Modelos.bytebank.Modelos.ADM.Utilitario;
 using bytebank_Modelos.bytebank.Modelos.Conta;
 using bytebank.Modelos.Conta;
 

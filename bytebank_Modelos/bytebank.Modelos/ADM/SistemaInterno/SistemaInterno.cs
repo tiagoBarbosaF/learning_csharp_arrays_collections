@@ -5,7 +5,7 @@ namespace bytebank.Modelos.ADM.SistemaInterno
     {
         public bool Logar(IAutenticavel funcionario, string senha)
         {
-            bool usuarioAutenticado = funcionario.Autenticar(senha);
+            bool usuarioAutenticado = funcionario.Authenticate(senha);
 
             if (usuarioAutenticado)
             {

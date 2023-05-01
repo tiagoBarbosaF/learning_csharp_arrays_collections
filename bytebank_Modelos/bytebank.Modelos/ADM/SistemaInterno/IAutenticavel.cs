@@ -2,6 +2,6 @@
 {
     public interface IAutenticavel
     {
-        bool Autenticar(string senha);
+        bool Authenticate(string password);
     }
 }

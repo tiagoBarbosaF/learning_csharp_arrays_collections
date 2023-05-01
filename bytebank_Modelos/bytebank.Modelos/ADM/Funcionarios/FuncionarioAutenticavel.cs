@@ -1,21 +1,22 @@
-﻿using bytebank.Modelos.ADM.SistemaInterno;
+﻿using bytebank_Modelos.bytebank.Modelos.ADM.Utilitario;
+using bytebank.Modelos.ADM.Funcionarios;
+using bytebank.Modelos.ADM.SistemaInterno;
 
-
-namespace bytebank.Modelos.ADM.Funcionarios
+namespace bytebank_Modelos.bytebank.Modelos.ADM.Funcionarios
 {
-    public abstract class FuncionarioAutenticavel : Funcionario, IAutenticavel
+  public abstract class FuncionarioAutenticavel : Funcionario, IAutenticavel
+  {
+    private UtilAuthentication authenticator = new();
+    public string Password { get; set; }
+
+    public FuncionarioAutenticavel(double salario, string cpf)
+      : base(salario, cpf)
     {
-        public string Senha { get; set; }
-
-        public FuncionarioAutenticavel(double salario, string cpf)
-            : base(salario, cpf)
-        {
-
-        }
-
-        public bool Autenticar(string senha)
-        {
-            return Senha == senha;
-        }
     }
+
+    public bool Authenticate(string password)
+    {
+      return authenticator.PasswordValidation(Password, password);
+    }
+  }
 }

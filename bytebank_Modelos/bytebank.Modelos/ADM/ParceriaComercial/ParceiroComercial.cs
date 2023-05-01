@@ -1,13 +1,16 @@
-﻿using bytebank.Modelos.ADM.SistemaInterno;
+﻿using bytebank_Modelos.bytebank.Modelos.ADM.Utilitario;
+using bytebank.Modelos.ADM.SistemaInterno;
 
-namespace bytebank.Modelos.ADM.Utilitario
+namespace bytebank_Modelos.bytebank.Modelos.ADM.ParceriaComercial
 {
-    public class ParceiroComercial : IAutenticavel
+  public class ParceiroComercial : IAutenticavel
+  {
+    private UtilAuthentication authenticator = new();
+    public string Password { get; set; }
+
+    public bool Authenticate(string password)
     {
-        public string Senha { get; set; }
-        public bool Autenticar(string senha)
-        {
-            return Senha == senha;
-        }
+      return authenticator.PasswordValidation(Password, password);
     }
+  }
 }
